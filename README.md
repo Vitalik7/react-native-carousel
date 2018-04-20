@@ -1,5 +1,10 @@
 ## Carousel component for react-native
 
+This module was forked from https://github.com/nick/react-native-carousel
+Now we can use two new methods to navigate from slide to slide: 
+- nextPage()
+- prevPage()
+
 ### Installation
 ```bash
 npm install react-native-carousel

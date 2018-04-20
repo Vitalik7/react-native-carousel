@@ -30,7 +30,7 @@ var Carousel = createReactClass({
       indicatorSpace: 25,
       animate: true,
       delay: 1000,
-      loop: true,
+      loop: true
     };
   },
 
@@ -46,6 +46,24 @@ var Carousel = createReactClass({
     } else {
       return Dimensions.get('window').width;
     }
+  },
+
+  nextPage() {
+    let nextPage = null
+    setTimeout(() => {
+      nextPage = this.state.activePage + 1.0952380952380953
+      this.refs.pager.scrollToPage(nextPage)
+    }, 100)
+  },
+
+  prevPage() {
+    let prevPage = null
+    setTimeout(() => {
+      prevPage = this.state.activePage - 1.0952380952380953
+      if (prevPage >= 0) {
+        this.refs.pager.scrollToPage(prevPage)
+      }
+    }, 100)
   },
 
   componentDidMount() {
