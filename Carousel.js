@@ -51,7 +51,7 @@ var Carousel = createReactClass({
   nextPage() {
     let nextPage = null
     setTimeout(() => {
-      nextPage = this.state.activePage + 1.0952380952380953
+      nextPage = this.state.activePage + Dimensions.get('window').width / this.getWidth()
       this.refs.pager.scrollToPage(nextPage)
     }, 100)
   },
@@ -59,7 +59,7 @@ var Carousel = createReactClass({
   prevPage() {
     let prevPage = null
     setTimeout(() => {
-      prevPage = this.state.activePage - 1.0952380952380953
+      prevPage = this.state.activePage - Dimensions.get('window').width / this.getWidth()
       if (prevPage >= 0) {
         this.refs.pager.scrollToPage(prevPage)
       }
@@ -160,7 +160,7 @@ var Carousel = createReactClass({
           ref="pager"
           width={this.getWidth()}
           contentContainerStyle={styles.container}
-          onBegin={this._onAnimationBeginPage}
+          onBegin={this._onAnimationBegin}
           onEnd={this._onAnimationEnd}
         >
           {this.props.children}
