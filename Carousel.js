@@ -8,7 +8,6 @@ var {
   Text,
   View,
 } = require('react-native');
-
 var TimerMixin = require('react-timer-mixin');
 var CarouselPager = require('./CarouselPager');
 
@@ -37,6 +36,7 @@ var Carousel = createReactClass({
   getInitialState() {
     return {
       activePage: this.props.initialPage > 0 ? this.props.initialPage : 0,
+      moving: false
     };
   },
 
@@ -48,21 +48,31 @@ var Carousel = createReactClass({
     }
   },
 
+  getChildrenLength() {
+    return this.props.hasOwnProperty('childrenLength') ? this.props.childrenLength : this.props.children.length
+  },
+
+  setMoving(value) {
+    if (this.state.moving !== value) {
+      this.setState({
+        moving: value
+      })
+    }
+  },
+
   nextPage() {
     let nextPage = null
     setTimeout(() => {
-      nextPage = this.state.activePage + Dimensions.get('window').width / this.getWidth()
-      this.refs.pager.scrollToPage(nextPage)
+      nextPage = this.state.activePage + 1
+      this.goToPage(nextPage)
     }, 100)
   },
 
   prevPage() {
     let prevPage = null
     setTimeout(() => {
-      prevPage = this.state.activePage - Dimensions.get('window').width / this.getWidth()
-      if (prevPage >= 0) {
-        this.refs.pager.scrollToPage(prevPage)
-      }
+      prevPage = this.state.activePage - 1
+      this.goToPage(prevPage)
     }, 100)
   },
 
@@ -76,9 +86,13 @@ var Carousel = createReactClass({
     }
   },
 
-  indicatorPressed(activePage) {
-    this.setState({activePage});
-    this.refs.pager.scrollToPage(activePage);
+  goToPage(pageIndex) {
+    // do not do anything if carousel is already moving
+    if (this.state.moving) return
+    if (pageIndex >= 0 && pageIndex < this.getChildrenLength()) {
+      this.setState({activePage: pageIndex})
+      this.refs.pager.scrollToPage(pageIndex)
+    }
   },
 
   renderPageIndicator() {
@@ -89,23 +103,18 @@ var Carousel = createReactClass({
     var indicators = [],
         indicatorStyle = this.props.indicatorAtBottom ? { bottom: this.props.indicatorOffset } : { top: this.props.indicatorOffset },
         style, position;
-
+    let childrenLength = this.getChildrenLength()
     position = {
-      width: this.props.children.length * this.props.indicatorSpace,
+      width: childrenLength * this.props.indicatorSpace,
     };
     position.left = (this.getWidth() - position.width) / 2;
-
-    for (var i = 0, l = this.props.children.length; i < l; i++) {
-      if (typeof this.props.children[i] === "undefined") {
-        continue;
-      }
-
+    for (var i = 0, l = childrenLength; i < l; i++) {
       style = i === this.state.activePage ? { color: this.props.indicatorColor } : { color: this.props.inactiveIndicatorColor };
       indicators.push(
          <Text
-            style={[style, { fontSize: this.props.indicatorSize }]}
+            style={[style, { fontSize: this.props.indicatorSize, lineHeight: this.props.indicatorSize }]}
             key={i}
-            onPress={this.indicatorPressed.bind(this,i)}
+            onPress={this.goToPage.bind(this,i)}
           >
              { i === this.state.activePage  ? this.props.indicatorText : this.props.inactiveIndicatorText }
           </Text>
@@ -115,7 +124,6 @@ var Carousel = createReactClass({
     if (indicators.length === 1) {
       return null;
     }
-
     return (
       <View style={[styles.pageIndicator, position, indicatorStyle]}>
         {indicators}
@@ -124,7 +132,7 @@ var Carousel = createReactClass({
   },
 
   _setUpTimer() {
-     if (this.props.children.length > 1) {
+     if (this.getChildrenLength() > 1) {
          this.clearTimeout(this.timer);
          this.timer = this.setTimeout(this._animateNextPage, this.props.delay);
      }
@@ -132,18 +140,18 @@ var Carousel = createReactClass({
 
   _animateNextPage() {
      var activePage = 0;
-     if (this.state.activePage < this.props.children.length - 1) {
+     if (this.state.activePage < this.getChildrenLength() - 1) {
          activePage = this.state.activePage + 1;
      } else if (!this.props.loop) {
          return;
      }
 
-     this.indicatorPressed(activePage);
+     this.goToPage(activePage);
      this._setUpTimer();
   },
 
   _onAnimationBegin() {
-     this.clearTimeout(this.timer);
+    this.clearTimeout(this.timer);
   },
 
   _onAnimationEnd(activePage) {
@@ -155,13 +163,14 @@ var Carousel = createReactClass({
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, width: this.getWidth() }}>
         <CarouselPager
           ref="pager"
           width={this.getWidth()}
           contentContainerStyle={styles.container}
           onBegin={this._onAnimationBegin}
           onEnd={this._onAnimationEnd}
+          setMoving={this.setMoving}
         >
           {this.props.children}
         </CarouselPager>
