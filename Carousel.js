@@ -29,7 +29,8 @@ var Carousel = createReactClass({
       indicatorSpace: 25,
       animate: true,
       delay: 1000,
-      loop: true
+      loop: true,
+      containerStyle: {}
     };
   },
 
@@ -163,11 +164,11 @@ var Carousel = createReactClass({
 
   render() {
     return (
-      <View style={{ flex: 1, width: this.getWidth() }}>
+      <View style={[{ flex: 1, width: this.getWidth()}]}>
         <CarouselPager
           ref="pager"
           width={this.getWidth()}
-          contentContainerStyle={styles.container}
+          contentContainerStyle={this.props.containerStyle}
           onBegin={this._onAnimationBegin}
           onEnd={this._onAnimationEnd}
           setMoving={this.setMoving}
