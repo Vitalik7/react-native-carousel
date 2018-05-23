@@ -50,7 +50,7 @@ var Carousel = createReactClass({
   },
 
   getChildrenLength() {
-    return this.props.hasOwnProperty('childrenLength') ? this.props.childrenLength : this.props.children.length
+    return React.Children.count(this.props.children)
   },
 
   setMoving(value) {
@@ -97,14 +97,14 @@ var Carousel = createReactClass({
   },
 
   renderPageIndicator() {
-    if (this.props.hideIndicators === true) {
+    let childrenLength = this.getChildrenLength()
+    if (this.props.hideIndicators === true || childrenLength <= 1) {
       return null;
     }
 
     var indicators = [],
         indicatorStyle = this.props.indicatorAtBottom ? { bottom: this.props.indicatorOffset } : { top: this.props.indicatorOffset },
         style, position;
-    let childrenLength = this.getChildrenLength()
     position = {
       width: childrenLength * this.props.indicatorSpace,
     };
@@ -122,9 +122,6 @@ var Carousel = createReactClass({
       );
     }
 
-    if (indicators.length === 1) {
-      return null;
-    }
     return (
       <View style={[styles.pageIndicator, position, indicatorStyle]}>
         {indicators}
@@ -173,7 +170,7 @@ var Carousel = createReactClass({
           onEnd={this._onAnimationEnd}
           setMoving={this.setMoving}
         >
-          {this.props.children}
+          {React.Children.toArray(this.props.children)}
         </CarouselPager>
         {this.renderPageIndicator()}
       </View>
