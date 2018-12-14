@@ -30,8 +30,19 @@ var Carousel = createReactClass({
       animate: true,
       delay: 1000,
       loop: true,
-      containerStyle: {}
+      containerStyle: {},
+      showSteps: false,
+      stepsWrapperStyles: {},
+      stepsTextStyles: {}
     };
+  },
+
+  renderSliderSteps () {
+    return(
+      <View style={this.props.stepsWrapperStyles}>
+        <Text style={this.props.stepsTextStyles}>{`${this.state.activePage + 1}/${this.props.children.length}`}</Text>
+      </View>
+    )
   },
 
   getInitialState() {
@@ -173,6 +184,7 @@ var Carousel = createReactClass({
           {React.Children.toArray(this.props.children)}
         </CarouselPager>
         {this.renderPageIndicator()}
+        {this.props.showSteps && this.renderSliderSteps()}
       </View>
     );
   },
