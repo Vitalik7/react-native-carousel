@@ -184,7 +184,7 @@ var Carousel = createReactClass({
           {React.Children.toArray(this.props.children)}
         </CarouselPager>
         {this.renderPageIndicator()}
-        {this.props.showSteps && this.renderSliderSteps()}
+        {this.props.showSteps && this.props.children.length && this.renderSliderSteps()}
       </View>
     );
   },
