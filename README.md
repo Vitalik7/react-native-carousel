@@ -24,6 +24,10 @@ onPageChange={callback} // Called when the active page changes
 inactiveIndicatorText= '•' // Inactive indicator content ( You can customize to use any Unicode character )
 indicatorText= '•' // Active indicator content ( You can customize to use any Unicode character )
 
+showSteps={false} // Set to true to show the steps
+stepsWrapperStyles={{}} // Styles for steps wrapper
+stepsTextStyles={{}} // Styles for steps text
+
 animate={true} // Enable carousel autoplay
 delay={1000} // Set Animation delay between slides
 loop={true} // Allow infinite looped animation. Depends on Prop {...animate} set to true.
