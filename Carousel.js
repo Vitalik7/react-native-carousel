@@ -40,7 +40,7 @@ var Carousel = createReactClass({
   renderSliderSteps () {
     return(
       <View style={this.props.stepsWrapperStyles}>
-        <Text style={this.props.stepsTextStyles}>{`${this.state.activePage + 1}/${this.props.children.length + 1}`}</Text>
+        <Text style={this.props.stepsTextStyles}>{`${this.state.activePage + 1}/${this.props.children.length - 1}`}</Text>
       </View>
     )
   },
