@@ -38,9 +38,14 @@ var Carousel = createReactClass({
   },
 
   renderSliderSteps () {
+    let activePage = this.state.activePage + 1
+    let allPages = this.props.children.length - 1
+    if (allPages < activePage) {
+      activePage = allPages
+    }
     return(
       <View style={this.props.stepsWrapperStyles}>
-        <Text style={this.props.stepsTextStyles}>{`${this.state.activePage + 1}/${this.props.children.length - 1}`}</Text>
+        <Text style={this.props.stepsTextStyles}>{`${activePage}/${allPages}`}</Text>
       </View>
     )
   },
