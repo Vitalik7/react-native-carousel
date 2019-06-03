@@ -13,20 +13,22 @@ var CarouselPager = createReactClass({
   },
 
   scrollToPage(page, animated) {
-    if (typeof animated === 'undefined') {
-      animated = true;
-    }
-    let newX = page * this.props.width
-    if (animated && this.state.x !== newX) this.props.setMoving(true)
-    this.refs.scrollView.scrollTo({
-      x: newX,
-      y: 0,
-      animated: animated
-    });
-    if (!animated) {
-      // fake scrollEnd event if not animated
-      this._onMomentumScrollEnd({nativeEvent: {contentOffset: {x: newX}}})
-    }
+    setTimeout(() => {
+      if (typeof animated === 'undefined') {
+        animated = true;
+      }
+      let newX = page * this.props.width
+      if (animated && this.state.x !== newX) this.props.setMoving(true)
+      this.refs.scrollView.scrollTo({
+        x: newX,
+        y: 0,
+        animated: animated
+      });
+      if (!animated) {
+        // fake scrollEnd event if not animated
+        this._onMomentumScrollEnd({nativeEvent: {contentOffset: {x: newX}}})
+      }
+    }, 0)
   },
 
   _onMomentumScrollEnd(e) {
