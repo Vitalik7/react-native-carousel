@@ -31,8 +31,14 @@ stepsTextStyles={{}} // Styles for steps text
 animate={true} // Enable carousel autoplay
 delay={1000} // Set Animation delay between slides
 loop={true} // Allow infinite looped animation. Depends on Prop {...animate} set to true.
+
+// ANDROID 
+orientation // Set horizontal or vertical scrolling orientation
+onPageScroll: (e: PageScrollEvent) => void // Executed when transitioning between pages (ether because the animation for the requested page has changed or when the user is swiping/dragging between pages)
  
 ```
+
+Android use `react-native-pager-view` module
 
 ### Usage example
 

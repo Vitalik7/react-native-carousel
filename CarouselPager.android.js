@@ -1,9 +1,7 @@
 var React = require('react');
 var createReactClass = require('create-react-class');
-var {
-  View,
-  ViewPagerAndroid,
-} = require('react-native');
+var { View } = require('react-native');
+import PagerView from 'react-native-pager-view'
 
 var CarouselPager = createReactClass({
 
@@ -24,20 +22,15 @@ var CarouselPager = createReactClass({
   },
 
   render() {
-    return <ViewPagerAndroid
+    return <PagerView
       ref="viewPager"
-      style={{flex: 1}}
-      contentContainerStyle={this.props.contentContainerStyle}
-      automaticallyAdjustContentInsets={false}
-      horizontal={true}
-      showsHorizontalScrollIndicator={false}
-      bounces={false}
+      style={{ width: '100%', height: '100%' }}
+      orientation={this.props.orientation || 'horizontal'}
       onPageScroll={this.props.onBegin}
       onPageSelected={(e) => this._onPageSelected(e.nativeEvent.position)}
-      scrollsToTop={false}
       >
         {this.props.children.map((c, idx) => <View key={idx} style={{flex: 1}}>{c}</View>)}
-      </ViewPagerAndroid>;
+      </PagerView>;
   },
 });
 
