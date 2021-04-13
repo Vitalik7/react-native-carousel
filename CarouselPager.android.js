@@ -24,7 +24,8 @@ var CarouselPager = createReactClass({
   render() {
     return <PagerView
       ref="viewPager"
-      style={{ width: '100%', height: '100%' }}
+      initialPage={0}
+      style={{ flex: 1 }}
       orientation={this.props.orientation || 'horizontal'}
       onPageScroll={this.props.onBegin}
       onPageSelected={(e) => this._onPageSelected(e.nativeEvent.position)}
