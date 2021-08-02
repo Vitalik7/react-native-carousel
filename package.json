@@ -22,7 +22,7 @@
   "homepage": "https://github.com/nick/react-native-carousel",
   "dependencies": {
     "react-timer-mixin": "^0.13.3",
-    "react-native-pager-view": "^5.1.2"
+    "react-native-pager-view": "^5.4.0"
   },
   "peerDependencies": {
     "react-native": ">=0.28 <1.0",
