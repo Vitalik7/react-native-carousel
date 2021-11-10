@@ -1,7 +1,6 @@
 'use strict';
 
 var React = require('react');
-var createReactClass = require('create-react-class');
 var {
   Dimensions,
   StyleSheet,
@@ -11,7 +10,7 @@ var {
 var TimerMixin = require('react-timer-mixin');
 var CarouselPager = require('./CarouselPager');
 
-var Carousel = createReactClass({
+var Carousel = React.createClass({
   mixins: [TimerMixin],
 
   getDefaultProps() {
