@@ -1,15 +1,19 @@
-var React = require('react');
-var {
+import React from 'react'
+import {
   ScrollView
-} = require('react-native');
+} from 'react-native';
 
-var CarouselPager = React.createClass({
+class CarouselPager extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
 
   getInitialState() {
     return {
       x: 0
     }
-  },
+  }
 
   scrollToPage(page, animated) {
     setTimeout(() => {
@@ -28,7 +32,7 @@ var CarouselPager = React.createClass({
         this._onMomentumScrollEnd({nativeEvent: {contentOffset: {x: newX}}})
       }
     }, 0)
-  },
+  }
 
   _onMomentumScrollEnd(e) {
     this.props.setMoving(false)
@@ -37,7 +41,7 @@ var CarouselPager = React.createClass({
     this.setState({
       x: e.nativeEvent.contentOffset.x
     })
-  },
+  }
 
   render() {
     return <ScrollView ref="scrollView"
@@ -53,7 +57,7 @@ var CarouselPager = React.createClass({
     >
       {this.props.children}
     </ScrollView>;
-  },
-});
+  }
+};
 
 module.exports = CarouselPager;

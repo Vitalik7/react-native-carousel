@@ -1,8 +1,12 @@
-var React = require('react');
-var { View } = require('react-native');
+import React from 'react'
+import { View } from 'react-native'
 import PagerView from 'react-native-pager-view'
 
-var CarouselPager = React.createClass({
+class CarouselPager extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
 
   scrollToPage(page, animated) {
     if (typeof animated === 'undefined') {
@@ -14,11 +18,11 @@ var CarouselPager = React.createClass({
       this.refs.viewPager.setPageWithoutAnimation(page);
     }
     this._onPageSelected(page);
-  },
+  }
 
   _onPageSelected(page) {
     this.props.onEnd(page);
-  },
+  }
 
   render() {
     return <PagerView
@@ -31,7 +35,7 @@ var CarouselPager = React.createClass({
       >
         {this.props.children.map((c, idx) => <View key={idx} style={{flex: 1}}>{c}</View>)}
       </PagerView>;
-  },
-});
+  }
+};
 
 module.exports = CarouselPager;

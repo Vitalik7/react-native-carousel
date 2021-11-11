@@ -1,17 +1,19 @@
 'use strict';
 
-var React = require('react');
-var {
+import React from 'react'
+import {
   Dimensions,
   StyleSheet,
   Text,
   View,
-} = require('react-native');
-var TimerMixin = require('react-timer-mixin');
-var CarouselPager = require('./CarouselPager');
+} from 'react-native';
+import CarouselPager from './CarouselPager';
 
-var Carousel = React.createClass({
-  mixins: [TimerMixin],
+class Carousel extends React.Component {
+    constructor(props) {
+      super(props)
+      this.state = {}
+    }
 
   getDefaultProps() {
     return {
@@ -34,7 +36,7 @@ var Carousel = React.createClass({
       stepsWrapperStyles: {},
       stepsTextStyles: {}
     };
-  },
+  }
 
   renderSliderSteps () {
     const { children, stepsWrapperStyles, stepsTextStyles, hideTheLastItem } = this.props
@@ -48,14 +50,14 @@ var Carousel = React.createClass({
         <Text style={stepsTextStyles}>{`${activePage}/${allPages}`}</Text>
       </View>
     )
-  },
+  }
 
   getInitialState() {
     return {
       activePage: this.props.initialPage > 0 ? this.props.initialPage : 0,
       moving: false
     };
-  },
+  }
 
   getWidth() {
     if (this.props.width !== null) {
@@ -63,11 +65,11 @@ var Carousel = React.createClass({
     } else {
       return Dimensions.get('window').width;
     }
-  },
+  }
 
   getChildrenLength() {
     return React.Children.count(this.props.children)
-  },
+  }
 
   setMoving(value) {
     if (this.state.moving !== value) {
@@ -75,7 +77,7 @@ var Carousel = React.createClass({
         moving: value
       })
     }
-  },
+  }
 
   nextPage() {
     let nextPage = null
@@ -83,7 +85,7 @@ var Carousel = React.createClass({
       nextPage = this.state.activePage + 1
       this.goToPage(nextPage)
     }, 100)
-  },
+  }
 
   prevPage() {
     let prevPage = null
@@ -91,7 +93,7 @@ var Carousel = React.createClass({
       prevPage = this.state.activePage - 1
       this.goToPage(prevPage)
     }, 100)
-  },
+  }
 
   componentDidMount() {
     if (this.props.initialPage > 0) {
@@ -101,7 +103,7 @@ var Carousel = React.createClass({
     if (this.props.animate && this.props.children){
         this._setUpTimer();
     }
-  },
+  }
 
   goToPage(pageIndex) {
     // do not do anything if carousel is already moving
@@ -110,7 +112,7 @@ var Carousel = React.createClass({
       this.setState({activePage: pageIndex})
       this.refs.pager.scrollToPage(pageIndex)
     }
-  },
+  }
 
   renderPageIndicator() {
     let childrenLength = this.getChildrenLength()
@@ -143,14 +145,14 @@ var Carousel = React.createClass({
         {indicators}
       </View>
     );
-  },
+  }
 
   _setUpTimer() {
      if (this.getChildrenLength() > 1) {
          this.clearTimeout(this.timer);
          this.timer = this.setTimeout(this._animateNextPage, this.props.delay);
      }
-  },
+  }
 
   _animateNextPage() {
      var activePage = 0;
@@ -162,18 +164,18 @@ var Carousel = React.createClass({
 
      this.goToPage(activePage);
      this._setUpTimer();
-  },
+  }
 
   _onAnimationBegin() {
     this.clearTimeout(this.timer);
-  },
+  }
 
   _onAnimationEnd(activePage) {
     this.setState({activePage});
     if (this.props.onPageChange) {
       this.props.onPageChange(activePage);
     }
-  },
+  }
 
   render() {
     return (
@@ -192,9 +194,8 @@ var Carousel = React.createClass({
         {this.props.showSteps && this.props.children.length && this.renderSliderSteps()}
       </View>
     );
-  },
-
-});
+  }
+};
 
 var styles = StyleSheet.create({
   pageIndicator: {
