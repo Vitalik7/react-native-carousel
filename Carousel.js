@@ -12,31 +12,11 @@ import CarouselPager from './CarouselPager';
 class Carousel extends React.Component {
     constructor(props) {
       super(props)
-      this.state = {}
+      this.state = {
+        activePage: this.props.initialPage > 0 ? this.props.initialPage : 0,
+        moving: false
+      }
     }
-
-  getDefaultProps() {
-    return {
-      hideIndicators: false,
-      indicatorColor: '#000000',
-      indicatorSize: 50,
-      inactiveIndicatorColor: '#999999',
-      indicatorAtBottom: true,
-      indicatorOffset: 250,
-      indicatorText: '•',
-      inactiveIndicatorText: '•',
-      width: null,
-      initialPage: 0,
-      indicatorSpace: 25,
-      animate: true,
-      delay: 1000,
-      loop: true,
-      containerStyle: {},
-      showSteps: false,
-      stepsWrapperStyles: {},
-      stepsTextStyles: {}
-    };
-  }
 
   renderSliderSteps () {
     const { children, stepsWrapperStyles, stepsTextStyles, hideTheLastItem } = this.props
@@ -52,13 +32,6 @@ class Carousel extends React.Component {
     )
   }
 
-  getInitialState() {
-    return {
-      activePage: this.props.initialPage > 0 ? this.props.initialPage : 0,
-      moving: false
-    };
-  }
-
   getWidth() {
     if (this.props.width !== null) {
       return this.props.width;
@@ -71,7 +44,7 @@ class Carousel extends React.Component {
     return React.Children.count(this.props.children)
   }
 
-  setMoving(value) {
+  setMoving = (value) => {
     if (this.state.moving !== value) {
       this.setState({
         moving: value
@@ -105,7 +78,7 @@ class Carousel extends React.Component {
     }
   }
 
-  goToPage(pageIndex) {
+  goToPage = (pageIndex) => {
     // do not do anything if carousel is already moving
     if (this.state.moving) return
     if (pageIndex >= 0 && pageIndex < this.getChildrenLength()) {
@@ -149,8 +122,10 @@ class Carousel extends React.Component {
 
   _setUpTimer() {
      if (this.getChildrenLength() > 1) {
-         this.clearTimeout(this.timer);
-         this.timer = this.setTimeout(this._animateNextPage, this.props.delay);
+        if (this.timer) {
+          this.clearTimeout(this.timer);
+        }
+         this.timer = setTimeout(this._animateNextPage, this.props.delay);
      }
   }
 
@@ -167,10 +142,12 @@ class Carousel extends React.Component {
   }
 
   _onAnimationBegin() {
-    this.clearTimeout(this.timer);
+    if (this.timer) {
+      this.clearTimeout(this.timer);
+    }
   }
 
-  _onAnimationEnd(activePage) {
+  _onAnimationEnd = (activePage) => {
     this.setState({activePage});
     if (this.props.onPageChange) {
       this.props.onPageChange(activePage);
@@ -208,5 +185,26 @@ var styles = StyleSheet.create({
     backgroundColor:'transparent',
   },
 });
+
+Carousel.defaultProps = {
+  hideIndicators: false,
+  indicatorColor: '#000000',
+  indicatorSize: 50,
+  inactiveIndicatorColor: '#999999',
+  indicatorAtBottom: true,
+  indicatorOffset: 250,
+  indicatorText: '•',
+  inactiveIndicatorText: '•',
+  width: null,
+  initialPage: 0,
+  indicatorSpace: 25,
+  animate: true,
+  delay: 1000,
+  loop: true,
+  containerStyle: {},
+  showSteps: false,
+  stepsWrapperStyles: {},
+  stepsTextStyles: {}
+};
 
 module.exports = Carousel;

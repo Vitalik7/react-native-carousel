@@ -6,12 +6,9 @@ import {
 class CarouselPager extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {}
-  }
 
-  getInitialState() {
-    return {
-      x: 0
+    this.state = {
+      x: 0,
     }
   }
 
@@ -34,7 +31,7 @@ class CarouselPager extends React.Component {
     }, 0)
   }
 
-  _onMomentumScrollEnd(e) {
+  _onMomentumScrollEnd = (e) => {
     this.props.setMoving(false)
     var activePage = e.nativeEvent.contentOffset.x / this.props.width;
     this.props.onEnd(Math.round(activePage));
